@@ -1,18 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Robin Hood OTC</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Robin Hood OTC</h1>
   <div id="result">
-    <p>Análise em tempo real com IA.</p>
-    <button onclick="gerarAnalise()">Analisar</button>
-    <p id="sinal"></p>
+    <div class="currency-selector">
+      <label for="currency-pair">Par de Moedas:</label>
+      <select id="currency-pair" onchange="analisarAutomaticamente()">
+        <option value="EUR/USD">EUR/USD</option>
+        <option value="GBP/USD">GBP/USD</option>
+        <option value="USD/JPY">USD/JPY</option>
+        <option value="AUD/USD">AUD/USD</option>
+        <option value="USD/CAD">USD/CAD</option>
+        <option value="USD/CHF">USD/CHF</option>
+        <option value="NZD/USD">NZD/USD</option>
+      </select>
+    </div>
+    
+    <div class="market-info">
+      <div class="market-status">
+        <span id="market-trend">Tendência: Analisando...</span>
+        <span id="market-volatility">Volatilidade: Analisando...</span>
+      </div>
+      <div class="chart-placeholder">
+        <div id="chart-simulation"></div>
+        <p>Gráfico de tendência</p>
+      </div>
+    </div>
+    
+    <div class="analysis-section">
+      <h2>Análise em tempo real com IA</h2>
+      <div class="patterns">
+        <h3>Padrões Identificados:</h3>
+        <ul id="patterns-list">
+          <li>Aguardando análise...</li>
+        </ul>
+      </div>
+      
+      <div class="signal-box">
+        <h3>Recomendação:</h3>
+        <p id="sinal">SINAL: AGUARDE</p>
+        <div id="signal-reason">Analisando mercado...</div>
+      </div>
+      
+      <button onclick="gerarAnalise()">Analisar Agora</button>
+    </div>
+    
+    <div class="history-section">
+      <h3>Histórico de Análises</h3>
+      <div id="analysis-history">
+        <p>Nenhuma análise realizada</p>
+      </div>
+    </div>
   </div>
+  
+  <footer>
+    <p>Robin Hood OTC &copy; 2025 - Análise de investimentos em tempo real</p>
+  </footer>
+  
   <script src="app.js"></script>
 </body>
 </html>
-Corrigir index.html com links ao CSS e JS
