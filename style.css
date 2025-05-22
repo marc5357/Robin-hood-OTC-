@@ -370,6 +370,80 @@ footer {
   color: #888;
 }
 
+/* Painel de ajuda */
+.help-button {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.help-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: #222;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border: 2px solid #00ff88;
+}
+
+.help-panel.hidden {
+  display: none;
+}
+
+.help-panel h3 {
+  margin-top: 0;
+  color: #00ff88;
+}
+
+.close-help {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #333;
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+}
+
+.help-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 10px;
+  text-align: left;
+}
+
+.help-content h4 {
+  color: #00ff88;
+  margin-bottom: 10px;
+}
+
+.help-content ol, .help-content ul {
+  padding-left: 20px;
+}
+
+.help-content li {
+  margin-bottom: 8px;
+}
+
+.help-content a {
+  color: #00ff88;
+  text-decoration: none;
+}
+
+.help-content a:hover {
+  text-decoration: underline;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   #result {
@@ -388,6 +462,24 @@ footer {
   
   .chart-container {
     height: 200px;
+  }
+  
+  .control-panel {
+    grid-template-columns: 1fr;
+  }
+  
+  .analysis-columns {
+    grid-template-columns: 1fr;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
   }
 }
 

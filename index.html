@@ -13,6 +13,15 @@
       <div class="currency-selector">
         <label for="currency-pair">Par de Moedas:</label>
         <select id="currency-pair" onchange="analisarAutomaticamente()">
+          <!-- Pares OTC -->
+          <option value="OTC EUR/USD">OTC EUR/USD</option>
+          <option value="OTC GBP/USD">OTC GBP/USD</option>
+          <option value="OTC USD/JPY">OTC USD/JPY</option>
+          <option value="OTC AUD/USD">OTC AUD/USD</option>
+          <option value="OTC USD/CAD">OTC USD/CAD</option>
+          <option value="OTC USD/CHF">OTC USD/CHF</option>
+          <option value="OTC NZD/USD">OTC NZD/USD</option>
+          <!-- Pares regulares -->
           <option value="EUR/USD">EUR/USD</option>
           <option value="GBP/USD">GBP/USD</option>
           <option value="USD/JPY">USD/JPY</option>
@@ -52,6 +61,31 @@
       </div>
     </div>
     
+    <div class="help-button">
+      <button onclick="toggleHelp()">Ajuda / Manual</button>
+    </div>
+    
+    <div id="help-panel" class="help-panel hidden">
+      <h3>Guia Rápido de Uso</h3>
+      <button class="close-help" onclick="toggleHelp()">X</button>
+      <div class="help-content">
+        <h4>Como usar o Robin Hood OTC:</h4>
+        <ol>
+          <li>Selecione o par de moedas OTC que deseja analisar</li>
+          <li>Confirme que o timeframe M1 está selecionado</li>
+          <li>Selecione sua corretora preferida</li>
+          <li>Para analisar um gráfico:
+            <ul>
+              <li>No celular: Toque na área central e selecione uma imagem da sua galeria</li>
+              <li>No computador: Arraste uma imagem do gráfico ou clique para fazer upload</li>
+            </ul>
+          </li>
+          <li>Observe os resultados da análise e a recomendação (CALL/PUT/AGUARDE)</li>
+        </ol>
+        <p><a href="guia_usuario.html" target="_blank">Ver manual completo</a></p>
+      </div>
+    </div>
+    
     <div class="analysis-container">
       <div class="market-info">
         <div class="market-status">
@@ -63,7 +97,8 @@
           <div class="chart-overlay">
             <div class="chart-capture-area" id="chart-capture-area">
               <div class="capture-instructions">
-                <p>Arraste o gráfico da corretora para esta área ou clique para fazer upload</p>
+                <p class="desktop-only">Arraste o gráfico da corretora para esta área ou clique para fazer upload</p>
+                <p class="mobile-only">Toque aqui para selecionar uma imagem do gráfico da sua galeria</p>
                 <input type="file" id="chart-upload" accept="image/*" style="display: none;">
               </div>
             </div>
@@ -123,6 +158,22 @@
   
   <script src="app.js"></script>
   <script>
+    // Detecta se é dispositivo móvel
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    // Ajusta classes com base no dispositivo
+    if (isMobile) {
+      document.body.classList.add('mobile');
+    } else {
+      document.body.classList.add('desktop');
+    }
+    
+    // Função para mostrar/ocultar painel de ajuda
+    function toggleHelp() {
+      const helpPanel = document.getElementById('help-panel');
+      helpPanel.classList.toggle('hidden');
+    }
+    
     // Inicialização do upload de imagens
     document.addEventListener('DOMContentLoaded', function() {
       const captureArea = document.getElementById('chart-capture-area');
@@ -133,7 +184,7 @@
         fileInput.click();
       });
       
-      // Configuração de drag and drop
+      // Configuração de drag and drop (principalmente para desktop)
       captureArea.addEventListener('dragover', function(e) {
         e.preventDefault();
         captureArea.classList.add('drag-over');
@@ -152,7 +203,7 @@
         }
       });
       
-      // Upload via input file
+      // Upload via input file (funciona em desktop e mobile)
       fileInput.addEventListener('change', function() {
         if (fileInput.files.length) {
           handleImageUpload(fileInput.files[0]);
