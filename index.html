@@ -9,46 +9,104 @@
 <body>
   <h1>Robin Hood OTC</h1>
   <div id="result">
-    <div class="currency-selector">
-      <label for="currency-pair">Par de Moedas:</label>
-      <select id="currency-pair" onchange="analisarAutomaticamente()">
-        <option value="EUR/USD">EUR/USD</option>
-        <option value="GBP/USD">GBP/USD</option>
-        <option value="USD/JPY">USD/JPY</option>
-        <option value="AUD/USD">AUD/USD</option>
-        <option value="USD/CAD">USD/CAD</option>
-        <option value="USD/CHF">USD/CHF</option>
-        <option value="NZD/USD">NZD/USD</option>
-      </select>
-    </div>
-    
-    <div class="market-info">
-      <div class="market-status">
-        <span id="market-trend">Tendência: Analisando...</span>
-        <span id="market-volatility">Volatilidade: Analisando...</span>
-      </div>
-      <div class="chart-placeholder">
-        <div id="chart-simulation"></div>
-        <p>Gráfico de tendência</p>
-      </div>
-    </div>
-    
-    <div class="analysis-section">
-      <h2>Análise em tempo real com IA</h2>
-      <div class="patterns">
-        <h3>Padrões Identificados:</h3>
-        <ul id="patterns-list">
-          <li>Aguardando análise...</li>
-        </ul>
+    <div class="control-panel">
+      <div class="currency-selector">
+        <label for="currency-pair">Par de Moedas:</label>
+        <select id="currency-pair" onchange="analisarAutomaticamente()">
+          <option value="EUR/USD">EUR/USD</option>
+          <option value="GBP/USD">GBP/USD</option>
+          <option value="USD/JPY">USD/JPY</option>
+          <option value="AUD/USD">AUD/USD</option>
+          <option value="USD/CAD">USD/CAD</option>
+          <option value="USD/CHF">USD/CHF</option>
+          <option value="NZD/USD">NZD/USD</option>
+        </select>
       </div>
       
-      <div class="signal-box">
-        <h3>Recomendação:</h3>
-        <p id="sinal">SINAL: AGUARDE</p>
-        <div id="signal-reason">Analisando mercado...</div>
+      <div class="timeframe-selector">
+        <label for="timeframe-selector">Timeframe:</label>
+        <select id="timeframe-selector" onchange="analisarAutomaticamente()">
+          <option value="M1" selected>M1 (1 minuto)</option>
+          <option value="M5">M5 (5 minutos)</option>
+          <option value="M15">M15 (15 minutos)</option>
+          <option value="M30">M30 (30 minutos)</option>
+        </select>
       </div>
       
-      <button onclick="gerarAnalise()">Analisar Agora</button>
+      <div class="capture-controls">
+        <button id="capture-button" onclick="gerarAnalise()">Analisar Agora</button>
+        <div class="auto-mode">
+          <label for="auto-mode-toggle">Análise Automática:</label>
+          <input type="checkbox" id="auto-mode-toggle">
+        </div>
+      </div>
+      
+      <div class="broker-selector">
+        <label for="broker-selector">Corretora:</label>
+        <select id="broker-selector">
+          <option value="quotex">Quotex</option>
+          <option value="pocket">Pocket Option</option>
+          <option value="iqoption">IQ Option</option>
+          <option value="other">Outra</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="analysis-container">
+      <div class="market-info">
+        <div class="market-status">
+          <span id="market-trend">Tendência: Aguardando análise...</span>
+          <span id="market-volatility">Volatilidade: Aguardando análise...</span>
+        </div>
+        <div class="chart-container">
+          <div id="chart-simulation"></div>
+          <div class="chart-overlay">
+            <div class="chart-capture-area" id="chart-capture-area">
+              <div class="capture-instructions">
+                <p>Arraste o gráfico da corretora para esta área ou clique para fazer upload</p>
+                <input type="file" id="chart-upload" accept="image/*" style="display: none;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="analysis-section">
+        <h2>Análise em tempo real com IA</h2>
+        
+        <div class="analysis-columns">
+          <div class="patterns-column">
+            <h3>Padrões Identificados:</h3>
+            <ul id="patterns-list">
+              <li>Aguardando análise...</li>
+            </ul>
+          </div>
+          
+          <div class="indicators-column">
+            <h3>Indicadores Técnicos:</h3>
+            <div id="indicators-display" class="indicators-display">
+              <div class="indicator">
+                <span class="indicator-name">RSI (14):</span>
+                <span class="indicator-value neutral">--</span>
+              </div>
+              <div class="indicator">
+                <span class="indicator-name">MACD:</span>
+                <span class="indicator-value neutral">--</span>
+              </div>
+              <div class="indicator">
+                <span class="indicator-name">Bandas de Bollinger:</span>
+                <span class="indicator-value neutral">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="signal-box">
+          <h3>Recomendação:</h3>
+          <p id="sinal" class="wait">SINAL: AGUARDE</p>
+          <div id="signal-reason">Aguardando análise do gráfico...</div>
+        </div>
+      </div>
     </div>
     
     <div class="history-section">
@@ -64,5 +122,66 @@
   </footer>
   
   <script src="app.js"></script>
+  <script>
+    // Inicialização do upload de imagens
+    document.addEventListener('DOMContentLoaded', function() {
+      const captureArea = document.getElementById('chart-capture-area');
+      const fileInput = document.getElementById('chart-upload');
+      
+      // Clique na área de captura abre o seletor de arquivo
+      captureArea.addEventListener('click', function() {
+        fileInput.click();
+      });
+      
+      // Configuração de drag and drop
+      captureArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        captureArea.classList.add('drag-over');
+      });
+      
+      captureArea.addEventListener('dragleave', function() {
+        captureArea.classList.remove('drag-over');
+      });
+      
+      captureArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        captureArea.classList.remove('drag-over');
+        
+        if (e.dataTransfer.files.length) {
+          handleImageUpload(e.dataTransfer.files[0]);
+        }
+      });
+      
+      // Upload via input file
+      fileInput.addEventListener('change', function() {
+        if (fileInput.files.length) {
+          handleImageUpload(fileInput.files[0]);
+        }
+      });
+      
+      // Função para processar a imagem carregada
+      function handleImageUpload(file) {
+        if (!file.type.match('image.*')) {
+          alert('Por favor, selecione uma imagem válida.');
+          return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          // Exibe a imagem na área de captura
+          captureArea.innerHTML = `<img src="${e.target.result}" alt="Gráfico carregado">`;
+          captureArea.classList.add('has-image');
+          
+          // Inicia análise automática da imagem
+          setTimeout(() => {
+            gerarAnalise();
+          }, 500);
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
 </body>
 </html>
